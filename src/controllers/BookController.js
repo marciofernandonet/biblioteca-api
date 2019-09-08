@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+var round = require('mongo-round');
 
 module.exports = {
     
@@ -83,13 +84,13 @@ module.exports = {
             { 
                 $project: { 
                     titulo: "$titulo",
-                    media: { $avg: "$notas"}
+                    media: round({ $avg: "$notas" }, 2)
                 } 
             }
-        ]).exec((err, result)=>{
-            if (err) {
+        ], (err, result)=>{
+            if(err){
                 res.status(400).send(err);
-            } else {
+            }else{
                 res.status(200).json(result);
             }
         });
